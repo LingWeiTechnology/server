@@ -1,11 +1,16 @@
-package io.github.jhipster.application.web.rest;
+package com.mycompany.myapp.web.rest;
 
 //import jxl.Cell;
 //import jxl.Sheet;
 //import jxl.Workbook;
-import io.github.jhipster.application.service.FarmService;
-import io.github.jhipster.application.service.dto.FarmDTO;
-import jxl.read.biff.BiffException;
+
+
+
+import com.mycompany.myapp.service.FarmService;
+import com.mycompany.myapp.service.dto.FarmDTO;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -16,10 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
-import java.io.IOException;
-
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,16 +29,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import io.github.jhipster.application.service.FarmService;
 
 /**
  * FarmDataController controller

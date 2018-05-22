@@ -42,6 +42,19 @@ public class CacheConfiguration {
             cm.createCache(com.mycompany.myapp.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.mycompany.myapp.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.mycompany.myapp.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.Farm.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.TuanInfo.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.TuanInfo.class.getName() + ".tuanmembers", jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.TuanInfo.class.getName() + ".daysechudlerinfos", jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.TuanInfo.class.getName() + ".messages", jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.TuanMember.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.DaySechudlerInfo.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.Message.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.Message.class.getName() + ".comments", jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.MessageComment.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.Employee.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.Job.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mycompany.myapp.domain.JobHistory.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

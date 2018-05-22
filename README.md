@@ -2,6 +2,65 @@
 This application was generated using JHipster 4.14.2, you can find documentation and help at [http://www.jhipster.tech/documentation-archive/v4.14.2](http://www.jhipster.tech/documentation-archive/v4.14.2).
 
 ## Development
+user mysql:
+chang pom:
+ <url>jdbc:mysql://116.62.218.53:3306/backend</url>
+ <defaultSchemaName>backend</defaultSchemaName>
+ <username>root</username>
+ <password>xxxxx</password>
+
+
+
+mvn liquibase:clearCheckSums
+
+./mvnw liquibase:update
+
+./mvnw liquibase:diff
+
+./mvnw -Pdev,no-liquibase
+
+… Liquibase: Waiting for changelog lock....
+mysql clean lock:
+
+mysql> SELECT * FROM DATABASECHANGELOGLOCK;
++----+--------+---------------------+-----------------------------------------+
+| ID | LOCKED | LOCKGRANTED         | LOCKEDBY                                |
++----+--------+---------------------+-----------------------------------------+
+|  1 |       | 2018-04-10 14:52:02 | izbp12bdx6sqk1ff173rojz (172.16.241.62) |
++----+--------+---------------------+-----------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> UPDATE DATABASECHANGELOGLOCK
+    -> SET locked=0, lockgranted=null, lockedby=null
+    -> WHERE id=1;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM DATABASECHANGELOGLOCK;
++----+--------+-------------+----------+
+| ID | LOCKED | LOCKGRANTED | LOCKEDBY |
++----+--------+-------------+----------+
+|  1 |        | NULL        | NULL     |
++----+--------+-------------+----------+
+1 row in set (0.01 sec)
+
+
+#add controller:
+ jhipster spring-controller farmDataController
+
+
+#import db design:
+https://www.jhipster.tech/jdl/
+https://start.jhipster.tech/jdl-studio/
+
+jhipster import-jdl jhipster-jdl.jh 
+
+
+
+#add api:
+in SecurityConfiguration :
+.antMatchers("/api/**");
+
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
 
@@ -114,7 +173,13 @@ Unit tests are run by [Karma][] and written with [Jasmine][]. They're located in
 
     yarn test
 
+UI end-to-end tests are powered by [Protractor][], which is built on top of WebDriverJS. They're located in [src/test/javascript/e2e](src/test/javascript/e2e)
+and can be run by starting Spring Boot in one terminal (`./mvnw spring-boot:run`) and running the tests (`yarn run e2e`) in a second one.
+### Other tests
 
+Performance tests are run by [Gatling][] and written in Scala. They're located in [src/test/gatling](src/test/gatling) and can be run with:
+
+    ./mvnw gatling:execute
 
 For more information, refer to the [Running tests page][].
 
@@ -149,12 +214,13 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [JHipster 4.14.2 archive]: http://www.jhipster.tech/documentation-archive/v4.14.2
 
 [Using JHipster in development]: http://www.jhipster.tech/documentation-archive/v4.14.2/development/
+[Service Discovery and Configuration with the JHipster-Registry]: http://www.jhipster.tech/documentation-archive/v4.14.2/microservices-architecture/#jhipster-registry
 [Using Docker and Docker-Compose]: http://www.jhipster.tech/documentation-archive/v4.14.2/docker-compose
 [Using JHipster in production]: http://www.jhipster.tech/documentation-archive/v4.14.2/production/
 [Running tests page]: http://www.jhipster.tech/documentation-archive/v4.14.2/running-tests/
 [Setting up Continuous Integration]: http://www.jhipster.tech/documentation-archive/v4.14.2/setting-up-ci/
 
-
+[Gatling]: http://gatling.io/
 [Node.js]: https://nodejs.org/
 [Yarn]: https://yarnpkg.org/
 [Webpack]: https://webpack.github.io/

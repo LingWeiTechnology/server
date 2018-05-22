@@ -7,6 +7,15 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
+                "farmMySuffix": "Farm",
+                "tuanInfoMySuffix": "Tuan Info",
+                "tuanMemberMySuffix": "Tuan Member",
+                "daySechudlerInfoMySuffix": "Day Sechudler Info",
+                "messageMySuffix": "Message",
+                "messageCommentMySuffix": "Message Comment",
+                "employeeMySuffix": "Employee",
+                "jobMySuffix": "Job",
+                "jobHistoryMySuffix": "Job History",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
