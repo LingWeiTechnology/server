@@ -6,13 +6,13 @@ package com.mycompany.myapp.web.rest;
 
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.mycompany.myapp.service.FarmService;
 import com.mycompany.myapp.service.dto.FarmDTO;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.io.*;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.*;
 /**
  * FarmDataController controller
  */
@@ -70,8 +67,9 @@ public class FarmDataControllerResource {
             farmDTO.setEmail(item.getString("邮箱"));
             farmDTO.setScope(item.getString("经营范围"));
             farmDTO.setStatus(new Long(0));
-
-//            farmService.save(farmDTO);
+            farmDTO.setStatus(new Long(0));
+            farmDTO = getLatAndLngByAddress(farmDTO);
+            farmService.save(farmDTO);
         }
 
 
@@ -88,6 +86,68 @@ public class FarmDataControllerResource {
     }
 
 
+
+    public FarmDTO getLatAndLngByAddress(FarmDTO addrInfo){
+        String addr = addrInfo.getCompanyLocation();
+        String address = "";
+        String lat = "";
+        String lng = "";
+        String precise = "";
+        String confidence = "" ;
+        String level="";
+
+        try {
+            address = java.net.URLEncoder.encode(addr,"UTF-8");
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        }
+        String url = String.format("http://api.map.baidu.com/geocoder/v2/?"
+            +"ak=PRKKmdmgPod63SfAvHoLZ47vTk13EkGe&output=json&address=%s",address);
+        URL myURL = null;
+        URLConnection httpsConn = null;
+        //进行转码
+        try {
+            myURL = new URL(url);
+        } catch (MalformedURLException e) {
+
+        }
+        try {
+            httpsConn = (URLConnection) myURL.openConnection();
+            if (httpsConn != null) {
+                InputStreamReader insr = new InputStreamReader(
+                    httpsConn.getInputStream(), "UTF-8");
+                BufferedReader br = new BufferedReader(insr);
+                String data = null;
+                if ((data = br.readLine()) != null) {
+
+                    JSONObject res = JSONObject.parseObject(data);
+                    JSONObject resdetail = res.getJSONObject("result");
+                    if(resdetail.containsKey("lat") && resdetail.containsKey("lng")){
+                        lat = resdetail.getString("lat");
+                        lng = resdetail.getString("lng");
+                        addrInfo.setLatitude(resdetail.getFloat("lat"));
+                        addrInfo.setLongitude(resdetail.getFloat("lng"));
+                    }
+                    if(resdetail.containsKey("precise") && resdetail.containsKey("confidence")){
+                        precise = resdetail.getString("precise");
+                        confidence = resdetail.getString("confidence");
+                    }
+                    if(resdetail.containsKey("level")){
+                       level = resdetail.getString("level");
+                    }
+                    addrInfo.setLevel(level);
+                    addrInfo.setPrecise(precise);
+                    addrInfo.setConfidence(confidence);
+
+                }
+                insr.close();
+            }
+        } catch (IOException e) {
+
+        }
+
+        return addrInfo;
+    }
 
 
     public  List<JSONObject>  handleExcel() throws JSONException {
